@@ -2,7 +2,9 @@ import * as THREE from "three"
 import { OrbitControls } from "three/addons/controls/OrbitControls.js"
 
 const canvas = document.querySelector("canvas.webgl")
+
 const scene = new THREE.Scene()
+scene.background = new THREE.Color("skyblue")
 const geometry = new THREE.BoxGeometry(1, 1, 1)
 const material = new THREE.MeshBasicMaterial({
   color: "#dd0000",
@@ -10,7 +12,17 @@ const material = new THREE.MeshBasicMaterial({
 })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
-const sizes = { width: 800, height: 600 }
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight / 2,
+}
+window.addEventListener("resize", () => {
+  sizes.width = window.innerWidth
+  sizes.height = window.innerHeight
+  camera.aspect = sizes.width / (sizes.height / 2)
+  camera.updateProjectionMatrix()
+  renderer.setSize(sizes.width, sizes.height / 2)
+} )
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
 camera.position.z = 3
 camera.lookAt(mesh.position)
